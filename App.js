@@ -17,42 +17,56 @@ export default function App(){
     answer:stmtOptAns[getv].correct,
     key:stmtOptAns[getv].key
   });
+  const [getcount, setcount]=useState(1);
   const [current,setCurrent]= useState("Home");
-  var siz1Tick,siz2Tick,siz3Tick,siz4Tick=0;
-  var siz1Cross,siz2Cross,siz3Cross,siz4Cross=0;
-  
-  const ansChk = (pas) => {
-    if(pas==getList.answer){
+
+  const next= ()=>{
+    setv(getv+1);
+    setList({question:stmtOptAns[getv].question,
+      option:stmtOptAns[getv].options,
+      answer:stmtOptAns[getv].correct,
+      key:stmtOptAns[getv].key})
+    setcount(getcount+1);
+    console.log(getv) 
+  };
+
+  const [getIdk,setIdk]=useState({score:0,an:0,idk1:"",idk2:"",idk3:"",idk4:""})
+  const updatean =(hm)=>{
+    setIdk({an:hm});
+  }
+
+  //const ansChk = (pas) => {
+    if(getIdk.an==getList.answer){
       console.log("gud") 
-      if(pas==1){
-        var siz1Tick=35
-      }else if(pas==2){
-        var siz2Tick=35
-      }else if(pas==3){
-        var siz3Tick=35
-        console.log("bad") 
-      }else if(pas==4){
-        console.log("gud") 
-        var siz4Tick=35
+      setIdk({score:getIdk.score+1})
+
+      if(getIdk.an==1){
+        setIdk({an:0,idk1:"✓"})
+      }else if(getIdk.an==2){
+        setIdk({an:0,idk2:"✓"})
+      }else if(getIdk.an==3){
+        setIdk({an:0,idk3:"✓"})
+      }else if(getIdk.an==4){ 
+        setIdk({an:0,idk4:"✓"})
       }
-    }else {
+    }else if(getIdk.an!=getList.answer && getIdk.an==1 ||getIdk.an==2||getIdk.an==3||getIdk.an==4){
       console.log("bad") 
-      if(pas==1){
-        var siz1Cross=35
-      }else if(pas==2){
-        var siz2Cross=35
-      }else if(pas==3){
-        var siz3Cross=35
-      }else if(pas==4){
-        var siz4Cross=35
+      if(getIdk.an==1){
+        setIdk({an:0,idk1:"X"})
+      }else if(getIdk.an==2){
+        setIdk({an:0,idk2:"X"})
+      }else if(getIdk.an==3){
+        setIdk({an:0,idk3:"X"})
+      }else if(getIdk.an==4){
+        setIdk({an:0,idk4:"X"})
       }
     }
-  }
+  //}
   
   const HomeScreen= (
     <View style={styles.container}>
       <ImageBackground source={image2} style={styles.imageHome}>
-        <Text style={styles.textQuestion}>Hello Frands,Quiz daay doo!</Text>
+        <Text style={styles.textQuestion}>Hello Frandz,Quiz daay doo!</Text>
         <Text style={styles.customButton} onPress={()=>setCurrent(QuizScreen)}>Start Quiz</Text>
       </ImageBackground>
     </View> 
@@ -63,7 +77,7 @@ export default function App(){
     <View style={styles.container}>
       <ImageBackground source={image} style={styles.image}>
         <View style={styles.quesCount}>
-          <Text style={{fontSize:18}}>Score:</Text>
+          <Text style={{fontSize:18}}>Score:{getIdk.score}</Text>
           <Text style={{fontSize:18}}>Question:{getList.key}/5
           </Text>
         </View>
@@ -76,31 +90,27 @@ export default function App(){
             >{getList.question}
           </Text>
           <View style={{alignItems:"center"}}>
-          <TouchableOpacity style={styles.optio} onPress={() => {ansChk(1)}}>
+          <TouchableOpacity style={styles.optio} onPress={updatean.bind(this,1)}>
             <Text style={{...styles.customButton,width:350}}>{getList.option[0]}</Text>
-            <Image style={{...styles.icon,width:siz1Tick,height:siz1Tick}} source={tickURI}/>
-            <Image style={{...styles.icon,width:siz1Cross,height:siz1Cross}} source={croseURI}/>
+            <Text style={{fontSize:25,padding:5}}>{getIdk.idk1}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.optio} onPress={() => {ansChk(2)}}>
+          <TouchableOpacity style={styles.optio} onPress={updatean.bind(this,2)}>
             <Text style={{...styles.customButton,width:350}}>{getList.option[1]}</Text>
-            <Image style={{...styles.icon,width:siz2Tick,height:siz2Tick}} source={tickURI}/>
-            <Image style={{...styles.icon,width:siz2Cross,height:siz2Cross}} source={croseURI}/>
+            <Text style={{fontSize:25,padding:5}}>{getIdk.idk2}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.optio} onPress={() => {ansChk(3)}}>
+          <TouchableOpacity style={styles.optio} onPress={updatean.bind(this,3)}>
             <Text style={{...styles.customButton,width:350}}>{getList.option[2]}</Text>
-            <Image style={{...styles.icon,width:siz3Tick,height:siz3Tick}} source={tickURI}/>
-            <Image style={{...styles.icon,width:siz3Cross,height:siz3Cross}} source={croseURI}/>
+            <Text style={{fontSize:25,padding:5}}>{getIdk.idk3}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.optio} onPress={() => {ansChk(4)}}>
+          <TouchableOpacity style={styles.optio} onPress={updatean.bind(this,4)}>
             <Text style={{...styles.customButton,width:350}}>{getList.option[3]}</Text>
-            <Image style={{...styles.icon,width:siz4Tick,height:siz4Tick}} source={tickURI}/>
-            <Image style={{...styles.icon,width:siz4Cross,height:siz4Cross}} source={croseURI}/>
+            <Text style={{fontSize:25,padding:5}}>{getIdk.idk4}</Text>
           </TouchableOpacity>
           </View>
         </View>  
         <View style={styles.nextButton}>
           <Text></Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={next}>
             <Image
               style={{width:40,height:40}}
               source={require("C:/Users/mubee/quizApp/assets/next.png")}
