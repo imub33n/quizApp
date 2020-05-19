@@ -6,7 +6,7 @@ const HeadD=({navigation})=>{
     return(
       <View style={styles.container}>
         <Image  
-            style={{width:200,height:40,marginVertical:60}}
+            style={{width:200,height:60,marginVertical:60}}
             source={require("C:/Users/mubee/quizApp/assets/teams.png")}
         />
       </View>
