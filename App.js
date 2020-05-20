@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Text, View, StyleSheet } from 'react-native';
+import {Button,Image, Text, View, StyleSheet } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from "@react-navigation/stack"
 import {createDrawerNavigator,DrawerItem,DrawerContentScrollView,DrawerItemList} from '@react-navigation/drawer'
@@ -8,11 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Home from "./Screens/Home"
-import Teams from "./Screens/Screen1"
-import Chat from "./Screens/Chat"
-import HeadD from "./Screens/HeadD"
-import Sett from "./Screens/Settings"
+import {Home,Teams,Chat,HeadD,Sett,Assign,Calendar,More} from "./Screens/ScreensAndOther"
 
 const Drawer= createDrawerNavigator();
 function MeDrawer() {
@@ -42,40 +38,88 @@ function CustomDrawerContent(props) {
     </DrawerContentScrollView>
   );
 }
-function LogoTitle() {
-  return (
-    <Image
-      style={{ width: 50, height: 50 }}
-      source={require('./assets/icon.png')}
-    />
-  );
-}
+
 const Tab = createMaterialBottomTabNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator activeColor="#694fad" inactiveColor="#999" barStyle={{ backgroundColor: '#f7f7f7' }} shifting={false}>
-      <Tab.Screen name="Activity" component={Home} 
-        options={{tabBarIcon:()=><FontAwesome name="bell-o" size={24} color="#694fad"/>, headerTitle: props => <LogoTitle {...props} /> }} 
+      <Tab.Screen name="Activity" component={StackHome} 
+        options={{tabBarIcon:()=><FontAwesome name="bell-o" size={24} color="gray"/>}} 
         />
-      <Tab.Screen name="Chat" component={Chat} options={{tabBarIcon:()=><MaterialIcons name="chat" size={24} color="#694fad" />}}/>
-      <Tab.Screen name="Teams" component={Teams} options={{tabBarIcon:()=><MaterialCommunityIcons name="account-group" size={24} color="#694fad" />}}/> 
-      <Tab.Screen name="Assignments" component={Teams} options={{tabBarIcon:()=><MaterialCommunityIcons name="bag-personal-outline" size={24} color="#694fad" />}}/>
-      <Tab.Screen name="Calender" component={Chat} options={{tabBarIcon:()=><MaterialCommunityIcons name="calendar-multiselect" size={24} color="#694fad" />}}/>
-      <Tab.Screen name="More" component={Chat} options={{tabBarIcon:()=><Ionicons name="ios-more" size={24} color="#694fad" />}}/>
-
-
+      <Tab.Screen name="Chat" component={StackChat} options={{tabBarIcon:()=><MaterialIcons name="chat" size={24} color="gray" />}}/>
+      <Tab.Screen name="Teams" component={StackTeams} options={{tabBarIcon:()=><MaterialCommunityIcons name="account-group" size={24} color="gray" />}}/> 
+      <Tab.Screen name="Assignments" component={StackAssignments} options={{tabBarIcon:()=><MaterialCommunityIcons name="bag-personal-outline" size={24} color="gray" />}}/>
+      <Tab.Screen name="Calender" component={StackCalender} options={{tabBarIcon:()=><MaterialCommunityIcons name="calendar-multiselect" size={24} color="gray" />}}/>
+      <Tab.Screen name="More" component={StackMore} options={{tabBarIcon:()=><Ionicons name="ios-more" size={24} color="gray" />}}/>
     </Tab.Navigator>
   );
 }
 
 const Stack= createStackNavigator();
-const StackNavigators=()=>{
+const StackHome=()=>{
   return(
-    <Stack.Navigator initialRouteName={"Home"}>
-      <Stack.Screen name="Home" component ={Home} options={{ title: 'Activity' }}/>
+    <Stack.Navigator screenOptions={({navigation})=>({
+      headerRight:()=><View style={{paddingHorizontal:10}}><MaterialIcons name="search" size={32} color="black" /></View>,
+      headerLeft:()=><View style={{paddingHorizontal:10}}><Ionicons name="ios-menu" size={32} color="black" onPress={()=>navigation.toggleDrawer()}/></View>})}>
+      <Stack.Screen name="Home" component ={Home} 
+      options={{
+        headerTitleAlign:"center" ,
+        }}/>
     </Stack.Navigator>
  );
 }
+const StackChat=()=>{
+  return(
+    <Stack.Navigator>
+      <Stack.Screen name="Chat" component ={Chat} 
+      options={({navigation})=>({
+        headerTitleAlign:"center" ,
+        headerRight:()=><View style={{paddingHorizontal:10}}><MaterialIcons name="search" size={32} color="black" /></View>,
+        headerLeft:()=><View style={{paddingHorizontal:10}}><Ionicons name="ios-menu" size={32} color="black" onPress={()=>navigation.toggleDrawer()}/></View>})}/>
+    </Stack.Navigator>
+ );
+}
+const StackTeams=()=>{
+  return(
+    <Stack.Navigator >
+      <Stack.Screen name="Teams" component ={Teams} 
+      options={({navigation})=>({
+        headerTitleAlign:"center" ,
+        headerRight:()=><View style={{paddingHorizontal:10}}><MaterialIcons name="search" size={32} color="black" /></View>,
+        headerLeft:()=><View style={{paddingHorizontal:10}}><Ionicons name="ios-menu" size={32} color="black" onPress={()=>navigation.toggleDrawer()}/></View>})}/>
+    </Stack.Navigator>
+ );
+}
+const StackAssignments=()=>{
+  return(
+    <Stack.Navigator >
+      <Stack.Screen name="Assignments" component ={Assign} 
+      options={({navigation})=>({
+        headerTitleAlign:"center" ,
+        headerRight:()=><View style={{paddingHorizontal:10}}><MaterialIcons name="search" size={32} color="black" /></View>,
+        headerLeft:()=><View style={{paddingHorizontal:10}}><Ionicons name="ios-menu" size={32} color="black" onPress={()=>navigation.toggleDrawer()}/></View>})}/>
+    </Stack.Navigator>
+ );
+}
+const StackCalender=()=>{
+  return(
+    <Stack.Navigator>
+      <Stack.Screen name="Calender" component ={Calendar} 
+      options={({navigation})=>({
+        headerTitleAlign:"center" ,
+        headerRight:()=><View style={{paddingHorizontal:10}}><MaterialIcons name="search" size={32} color="black" /></View>,
+        headerLeft:()=><View style={{paddingHorizontal:10}}><Ionicons name="ios-menu" size={32} color="black" onPress={()=>navigation.toggleDrawer()}/></View>})}/>
+    </Stack.Navigator>
+ );
+}
+const StackMore=()=>{
+  return(
+    <Stack.Navigator >
+      <Stack.Screen name="Options" component ={More} options={{ headerTitleAlign:"center" }} />
+    </Stack.Navigator>
+ );
+}
+
 
 function App() {
   return (
