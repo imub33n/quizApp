@@ -5,12 +5,22 @@ import {Button,Image, Text, View, StyleSheet } from 'react-native';
 const Home=({navigation})=>{
     return(
       <View style={styles.container}>
-       <Text>Activity</Text>
-       {/* <Button title="start"
-       onPress={()=>navigation.navigate('Screen1')}>
+       <Text >Feed</Text>
+       {/* <Button title="Feed"
+       onPress={()=>navigation.navigate('Feed')}>
        </Button> */}
       </View>
     );
+}
+const Feed=({navigation})=>{
+  return(
+    <View style={styles.container}>
+     <Text>Feed</Text>
+     <Button title="Feed"
+     onPress={()=>navigation.goBack()}>
+     </Button>
+    </View>
+  );
 }
 const Sett=({navigation})=>{
   return(
@@ -81,12 +91,11 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       },
+    textS:{
+      fontSize:32
+    }
     });
-// export default Home;
-// export default Sett;
-// export default Chat;
-// export default Teams;
-// export default HeadD;
+
 module.exports = {
   Home: Home,
   Sett: Sett,
