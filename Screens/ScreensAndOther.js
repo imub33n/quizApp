@@ -1,32 +1,15 @@
 import React, { useState } from 'react';
-import {Image, Text, View, StatusBar, StyleSheet, ScrollView } from 'react-native';
+import {Image, Text, View, StatusBar, StyleSheet, ScrollView ,TouchableOpacity} from 'react-native';
 import { SearchBar,Button,ListItem } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import _ from "lodash";
 
-// const contains=({Country},searcah)=>{
-//     if(Country.includes(searcah)){
-//       return true;
-//     }
-//     return false;
-// }
-// const getCountry = (limit=10,searc="")=>{
-//   return new Promise((resolve,reject)=>{
-//     if(searc.length===0){
-//       resolve(_.take(user,limit));
-//     }else{
-//       const formatSearch=searc.toLowerCase();
-//       const results=_.filter(this.state.data,user=>{return contains(user,formatSearch)});
-//       resolve(_.take(results,limit));
-//     }
-//   });
-// }
 class Scre1en extends React.Component {
   state = {
     search: '',
-    list:[{name: 'Amy Farhan'},{name: 'Chris Jacksin'}],
     data:[],
-    fullData:[] 
+    fullData:[],
+    cName:""
   };
   componentDidMount(){
     this.makeRemoteRequest();
@@ -57,8 +40,8 @@ class Scre1en extends React.Component {
   };
   updateSearch = search => {
     // this.getAPIData();
-    console.log("inside search",search);
-    console.log(this.state.data);
+    //console.log("inside search",search);
+    //console.log(this.state.data);
     //let data=this.state.data.filter(x=> x.Country.includes(search))
     const data=_.filter(this.state.fullData,user=>{
       return user.Country.includes(search)});
@@ -84,22 +67,22 @@ class Scre1en extends React.Component {
               height:60
             }}/>
           </View>
-          <Button title="Search" type="solid" buttonStyle={{backgroundColor:"black"}}
-            onPress={()=>{goToScreen2}}>
-            {/* onPress={()=>{navigation.navigate('Country Details');}}>//this.getAPIData() */}
-          </Button>
+          
         </View>
         <View style={{color:"black",width:350,height:400}}>
             <ScrollView style={{width:350,height:400}}>
-              {
-                this.state.data.map((l, i) => (
-                  <ListItem
-                    key={i}
-                    title={l.Country}
-                    bottomDivider
-                  />
-                ))
-              }
+                {
+                  this.state.data.map((l, i) => (
+                    <TouchableOpacity onPress={()=>{navigation.navigate('Country Details',l);}}>
+                      <ListItem 
+                        key={i}
+                        title={l.Country}
+                        bottomDivider
+                      />
+                    </TouchableOpacity>
+                  ))
+                }
+              
             </ScrollView>
           </View>
     </View>
@@ -113,42 +96,95 @@ const Screen1=(props)=>{
        <Scre1en {...props} navigation={navigation}></Scre1en>
     );
 }
+//////////////////////////////////////////////////  Screen 2 /////////////
 
-
-
-
-
-
-const Screen2=({navigation})=>{
-  return(
-    <View style={{...styles.container,backgroundColor:"white"}}>
-    <Text>Screen2</Text>
-    <Button title="Back"
-    onPress={()=>navigation.goBack()}>
-    </Button>
-  </View>
-);
+class Scre2en extends React.Component {
+  state = {
+    cName:"",
+    firstCaseDate:"",
+    noOfCasesDayOne:"",
+    totalConfirm:"",
+    deaths:"",
+    recover:"",
+    activeCases:"",
+    data:[],
+    fullData:[],
+  };
+  
+  componentDidMount(){
+    this.makeRemoteRequest();
+  }
+  makeRemoteRequest = ()=>{
+    this.getAPIData();
+    this.getAPIData2();
+  }
+  getAPIData2 =  (  ) => {
+    const { route } = this.props;
+    console.log("inside GetAPIData2 Screen2")
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+    return fetch('https://api.covid19api.com/dayone/country/'+route.params.Slug+'/status/confirmed', 
+      requestOptions)
+      .then(response => response.json())
+      .then(responseJSON => {
+        this.setState({
+          firstCaseDate:responseJSON[0].Date,
+          noOfCasesDayOne:responseJSON[0].Cases,
+          totalConfirm:responseJSON[responseJSON.length-1].Cases,
+        });
+      });
+  };
+  getAPIData =  (  ) => {
+    const { route } = this.props;
+    console.log("inside GetAPIData Screen2")
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+    return fetch('https://api.covid19api.com/live/country/'+route.params.Slug+'/status/confirmed', 
+      requestOptions)
+      .then(response => response.json())
+      .then(responseJSON => {
+        this.setState({
+          deaths:responseJSON[responseJSON.length-1].Deaths,
+          recover:responseJSON[responseJSON.length-1].Recovered,
+          activeCases:responseJSON[responseJSON.length-1].Active,
+        });
+      });
+  };
+  render() {
+    const { route } = this.props;
+    const { navigation } = this.props;
+    return (
+      <View style={{...styles.container,backgroundColor:"white"}} >
+        <Text style={styles.textS}>{route.params.Country}</Text>
+        <Text>Date when first case(s) were reported:{this.state.firstCaseDate}</Text>
+        <Text>Number of cases reported first day: {this.state.noOfCasesDayOne}</Text>
+        <Text>Total Confirmed Cases:{this.state.totalConfirm}</Text>
+        <Text>Deaths:{this.state.deaths}</Text>
+        <Text>Recovered:{this.state.recover}</Text>
+        <Text>Active Cases:{this.state.activeCases}</Text>
+        <Text></Text>
+        <Button title="Back"
+        onPress={()=>navigation.goBack()}>
+        </Button>
+      </View>
+      )
+    }
 }
-const Screen3=({navigation})=>{
+
+const Screen2=(props)=>{
+  const navigation = useNavigation();
+  const route = useRoute();
   return(
-    <View style={{...styles.container,backgroundColor:"#691f1d"}}>
-     <Text>Screen3</Text>
-     {/* <Button title="Feed"
-     onPress={()=>navigation.goBack()}>
-     </Button> */}
-    </View>
+    <Scre2en {...props} navigation={route,navigation}></Scre2en>
+      
   );
 }
-const Screen4=({navigation})=>{
-  return(
-    <View style={{...styles.container,backgroundColor:"#194fad"}}>
-    <Text>Screen4</Text>
-    {/* <Button title="Back"
-    onPress={()=>navigation.goBack()}>
-    </Button> */}
-  </View>
-);
-}
+
+
 const HeadD=({navigation})=>{
   return(
     <View style={styles.container}>
@@ -174,9 +210,5 @@ const styles = StyleSheet.create({
 module.exports = {
   Screen1: Screen1,
   Screen2: Screen2,
-  Screen3: Screen3,
-  Screen4: Screen4,
   HeadD: HeadD,
-  
-  
 }

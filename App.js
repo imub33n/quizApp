@@ -4,11 +4,10 @@ import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from "@react-navigation/stack"
 import {createDrawerNavigator,DrawerItem,DrawerContentScrollView,DrawerItemList} from '@react-navigation/drawer'
 import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import {Screen1,Screen2,Screen3,Screen4,HeadD} from "./Screens/ScreensAndOther"
 
+import {Screen1,Screen2,HeadD} from "./Screens/ScreensAndOther";
+import Screen3 from "./Screens/Screen3"
+import Screen4 from "./Screens/Screen4"
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
