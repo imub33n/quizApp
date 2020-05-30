@@ -355,7 +355,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import {Screen1,Screen2,HeadD} from "./Screens/ScreensAndOther";
 import Screen3 from "./Screens/Screen3"
-import Screen4 from "./Screens/Screen4"
+import MyTabs from "./Screens/Screen4"
 function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
@@ -405,7 +405,7 @@ const StackContinental=()=>{
   return(
     <Stack.Navigator screenOptions={({navigation})=>({
       headerLeft:()=><View style={{paddingHorizontal:10}}><Ionicons name="md-menu" size={32} color="white" onPress={()=>navigation.toggleDrawer()}/></View>})}>
-      <Stack.Screen name="All Country Stats" component ={Screen4} 
+      <Stack.Screen name="All Country Stats" component ={MyTabs} 
       options={{
         headerStyle: {
           backgroundColor: 'black',

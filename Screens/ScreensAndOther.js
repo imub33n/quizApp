@@ -16,10 +16,6 @@ class Scre1en extends React.Component {
   }
   makeRemoteRequest = ()=>{
     this.getAPIData();
-    this.setState({
-      data:this.state.data,
-      fullData:this.state.data,
-    })
   }
   getAPIData =  (  ) => {
     console.log("inside GetAPIData")
@@ -47,6 +43,9 @@ class Scre1en extends React.Component {
       return user.Country.includes(search)});
     this.setState({ search:search,data });
   };
+
+
+  
   render() {
     const { search } = this.state;
     const { navigation } = this.props;
@@ -107,8 +106,8 @@ class Scre2en extends React.Component {
     deaths:"",
     recover:"",
     activeCases:"",
-    data:[],
-    fullData:[],
+    // data:[],
+    // fullData:[],
   };
   
   componentDidMount(){
@@ -187,7 +186,7 @@ const Screen2=(props)=>{
 
 const HeadD=({navigation})=>{
   return(
-    <View style={styles.container}>
+    <View style={{...styles.container,paddingTop:20}}>
       <Image  
           style={{width:200,height:85,marginVertical:60}}
           source={require("C:/Users/mubee/quizApp/assets/Covid.jpg")}
