@@ -1,17 +1,17 @@
 import React from 'react';
 import { Text , View, StyleSheet, ScrollView } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import _ from "lodash";
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 // const content =()=> console.log("asia")
 const content=()=><Scre4en continent="asia"/>
 const content1=()=><Scre4en continent="africa"/>
-const content2=()=><Scre4en continent="australia"/>
-const content3=()=><Scre4en continent="europe"/>
-const content4=()=><Scre4en continent="north america"/>
-const content5=()=><Scre4en continent="south america"/>
+const content2=()=><Scre4en continent="north america"/>
+const content3=()=><Scre4en continent="australia"/>
+const content4=()=><Scre4en continent="south america"/>
+const content5=()=><Scre4en continent="europe"/>
 
 class Scre4en extends React.Component {
   state = {
@@ -41,13 +41,14 @@ class Scre4en extends React.Component {
   render(){
     return(
       <View style={{  backgroundColor:"white"}}>
-        <ScrollView style={{marginTop:0,marginBottom:0}} >
+        <ScrollView contentInset={{left:200  }} >
             {
               this.state.data.map((l) => (
-                  <ListItem
+                  <ListItem contentContainerStyle={{alignItems:"center"}}
                     title={l.name}
+                    titleStyle={{color:"black",fontSize:20,paddingVertical:5}}
                     subtitle={"Cases: "+l.cases+" | Deaths: "+l.deaths}
-                    bottomDivider
+                    subtitleStyle={{color:"#296D98",fontSize:18}}
                   />
               ))
             }
@@ -59,13 +60,13 @@ class Scre4en extends React.Component {
 
 function MyTabs() {
   return (
-    <Tab.Navigator activeColor="black" inactiveColor="#999" barStyle={{ backgroundColor: '#f7f7f7' }} shifting={false}>
+    <Tab.Navigator barStyle={{ backgroundColor: '#f7f7f7' }} tabBarOptions={{activeTintColor:"black",inactiveBackgroundColor:"black", labelStyle:{paddingBottom:15}}}>
       <Tab.Screen name="Asia" component={content}  />
       <Tab.Screen name="Africa" component={content1} />
-      <Tab.Screen name="Australia" component={content2}  />
-      <Tab.Screen name="Europe" component={content3}  />
-      <Tab.Screen name="North America" component={content4} />
-      <Tab.Screen name="South America" component={content5} options={{ tabBarLabel: 'South America'}} />
+      <Tab.Screen name="North America" component={content2} />
+      <Tab.Screen name="Australia" component={content3}  />
+      <Tab.Screen name="South America" component={content4} options={{ tabBarLabel: 'South America'}} />
+      <Tab.Screen name="Europe" component={content5}  />
     </Tab.Navigator>
   ); 
 } 

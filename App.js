@@ -13,13 +13,13 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props}>
       <HeadD></HeadD>
       <DrawerItemList {...props} />
-      <DrawerItem label="Help" onPress={() => alert("Alert!!! This alert won't HELP you,its a HELPless HELP alert!")} />
+      <DrawerItem label="Help" onPress={() => alert("This is a Covid-19 tracker application. It tracks countries stats, global cases and Region wise data.")} />
     </DrawerContentScrollView>
   );}
 const Stack= createStackNavigator();
 const StackStart=()=>{
   return(
-    <Stack.Navigator screenOptions={({navigation})=>({
+    <Stack.Navigator initialRouteName={Screen1} screenOptions={({navigation})=>({
       headerLeft:()=><View style={{paddingHorizontal:10}}><Ionicons name="md-menu" size={32} color="white" onPress={()=>navigation.toggleDrawer()}/></View>})}>
       <Stack.Screen name="Start" component ={Screen1} 
       options={{

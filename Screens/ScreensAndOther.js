@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {Image, Text, View, StatusBar, StyleSheet, ScrollView ,TouchableOpacity} from 'react-native';
 import { SearchBar,Button,ListItem } from 'react-native-elements';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { MaterialIcons } from '@expo/vector-icons'; 
 import _ from "lodash";
 
 class Scre1en extends React.Component {
@@ -52,12 +53,13 @@ class Scre1en extends React.Component {
     return (
       <View style={{...styles.container,backgroundColor:"white"}}>
         <StatusBar barStyle="light-content"/>
+        <Text style={styles.textX}>COVID-19 Tracker</Text>
         <View style={{flexDirection:"row",alignSelf:"center",alignItems:"center"}}>
           <View style={{width:320,height:60,margin:20}}>
             <SearchBar 
             // cancelIcon={false}
             platform="android"
-            placeholder="Search Country Here"
+            placeholder="Search Any Country Here"
             onChangeText={this.updateSearch}           //Search here this.updateSearch
             value={search}
             containerStyle={{
@@ -68,13 +70,13 @@ class Scre1en extends React.Component {
           </View>
           
         </View>
-        <View style={{color:"black",width:350,height:400}}>
+        {this.state.search.length>0 ?  <View style={{color:"black",width:350,height:400}}>
             <ScrollView style={{width:350,height:400}}>
                 {
                   this.state.data.map((l, i) => (
                     <TouchableOpacity onPress={()=>{navigation.navigate('Country Details',l);}}>
                       <ListItem 
-                        key={i}
+                        key={l.ISO2}
                         title={l.Country}
                         bottomDivider
                       />
@@ -83,7 +85,8 @@ class Scre1en extends React.Component {
                 }
               
             </ScrollView>
-          </View>
+          </View> : null}
+        
     </View>
     );
   }
@@ -129,7 +132,7 @@ class Scre2en extends React.Component {
       .then(response => response.json())
       .then(responseJSON => {
         this.setState({
-          firstCaseDate:responseJSON[0].Date,
+          firstCaseDate:responseJSON[0].Date.substring(0, 10),
           noOfCasesDayOne:responseJSON[0].Cases,
           totalConfirm:responseJSON[responseJSON.length-1].Cases,
         });
@@ -157,20 +160,23 @@ class Scre2en extends React.Component {
     const { route } = this.props;
     const { navigation } = this.props;
     return (
-      <View style={{...styles.container,backgroundColor:"white"}} >
-        <Text style={styles.textS}>{route.params.Country}</Text>
-        <Text>Date when first case(s) were reported:{this.state.firstCaseDate}</Text>
-        <Text>Number of cases reported first day: {this.state.noOfCasesDayOne}</Text>
-        <Text>Total Confirmed Cases:{this.state.totalConfirm}</Text>
-        <Text>Deaths:{this.state.deaths}</Text>
-        <Text>Recovered:{this.state.recover}</Text>
-        <Text>Active Cases:{this.state.activeCases}</Text>
-        <Text></Text>
-        <Button title="Back"
-        onPress={()=>navigation.goBack()}>
-        </Button>
+      <View style={{...styles.container,backgroundColor:"white",paddingTop:"40%"}} >
+        <Text style={styles.textS}>COVID19 cases in '{route.params.Country}'</Text>
+        <Text style={{...styles.textX,paddingTop:"10%"}}>Date when first case(s) were reported</Text>
+        <Text style={{fontSize:16}}>{this.state.firstCaseDate}</Text>
+        <Text style={styles.textX}>Number of cases reported first day</Text>
+        <Text style={{fontSize:16}}>{this.state.noOfCasesDayOne}</Text>
+        <Text style={styles.textX}>Total Confirmed Cases</Text>
+        <Text style={{fontSize:16,color:"#296D98"}}>{this.state.totalConfirm}</Text>
+        <Text style={styles.textX}>Deaths</Text>
+        <Text style={{color:"red",fontSize:16}}>{this.state.deaths}</Text>
+        <Text style={styles.textX}>Recovered</Text>
+        <Text style={{color:"green",fontSize:16}}>{this.state.recover}</Text>
+        <Text style={styles.textX}>Active Cases</Text>
+        <Text style={{color:"darkblue",fontSize:16}}>{this.state.activeCases}</Text>
+        <MaterialIcons style={{marginTop:100}} name="arrow-back" size={38} color="black" onPress={()=>navigation.goBack()}/>
       </View>
-      )
+      ) 
     }
 }
 
@@ -203,6 +209,10 @@ const styles = StyleSheet.create({
       },
     textS:{
       fontSize:32
+    },
+    textX:{
+      fontSize:18,
+      fontWeight:"bold"
     }
     });
 

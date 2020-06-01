@@ -12,12 +12,8 @@ class Scre3en extends React.Component {
     tRecovered:"",
   };
   componentDidMount(){
-    this.makeRemoteRequest();
-  }
-  makeRemoteRequest = ()=>{
     this.getAPIData();
   }
-  
   getAPIData = () => {
     var requestOptions = {
       method: 'GET',
@@ -36,18 +32,26 @@ class Scre3en extends React.Component {
           tRecovered:responseJSON.Global.TotalRecovered,
         });
         //console.log(responseJSON.Global.NewConfirmed)
-      });
+      })
+      .catch(function(error) {
+        console.log('There has been a problem with your fetch operation: ' + error.message);
+        });
   };
   render(){
     return(
-      <View style={{...styles.container,backgroundColor:"white"}}>
-       <Text style={styles.textS}>Global Cases</Text>
-       <Text>New Confirmed:{this.state.nCases} </Text>
-       <Text>Total Confirmed:{this.state.tCases} </Text>
-       <Text>New Deaths:{this.state.nDeaths} </Text>
-       <Text>Total Deaths:{this.state.tDeaths} </Text>
-       <Text>New Recovered:{this.state.nRecovered} </Text>
-       <Text>Total Recovered:{this.state.tRecovered} </Text>
+      <View style={{...styles.container,backgroundColor:"white",paddingTop:"35%",borderWidth:1}}>
+       
+        <Text style={{...styles.textS,marginBottom:"15%"}}>CASES WORLDWIDE</Text>
+        <View style={{borderWidth:2,width:420,flexDirection:"row",paddingTop:20,borderBottomWidth:0}}>
+          <Text style={styles.textZ}>Cases</Text><Text style={styles.textZ}>Confirmed</Text><Text style={styles.textZ}>Deaths</Text><Text style={styles.textZ}>Recovered</Text>
+        </View>
+        <View style={{borderLeftWidth:2,borderRightWidth:2,width:420,flexDirection:"row",paddingTop:20}}>
+          <Text style={styles.textZ}>New</Text><Text style={styles.textX}>{this.state.nCases} </Text><Text style={styles.textX}>{this.state.nDeaths} </Text><Text style={styles.textX}>{this.state.nRecovered} </Text>
+        </View>
+        <View style={{borderWidth:2,width:420,flexDirection:"row",paddingTop:20,borderTopWidth:0}}>
+          <Text style={styles.textZ}>Total</Text><Text style={styles.textX}>{this.state.tCases} </Text><Text style={styles.textX}>{this.state.tDeaths} </Text><Text style={styles.textX}>{this.state.tRecovered} </Text>
+        </View>
+      
       </View>
     );
   }
@@ -68,6 +72,20 @@ const styles = StyleSheet.create({
         },
     textS:{
         fontSize:32
+    },
+    textX:{
+      color:"#296D98",
+      fontSize:16,
+      width:100,
+      height:60,
+      textAlign:"center"
+    },
+    textZ:{
+      fontWeight:"bold",
+      fontSize:18,
+      width:100,
+      height:60,
+      textAlign:"center"
     }
 });
 

@@ -44,7 +44,7 @@ function MyTabs() {
       <Tab.Screen name="Calender" component={StackCalender} options={{tabBarIcon:()=><MaterialCommunityIcons name="calendar-multiselect" size={24} color="gray" />}}/>
       <Tab.Screen name="More" component={StackMore} options={{tabBarIcon:()=><Ionicons name="ios-more" size={24} color="gray" />}}/>
     </Tab.Navigator>
-  );
+  ); 
 }
 const StackChat=()=>{
     return(
